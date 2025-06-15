@@ -3,39 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pembagian Tugas Perbaikan Nilai</title>
+  <title>Tugas Remidi Informatika</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: #f2f2f2;
+      background: #eef2f7;
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
       background: #fff;
       padding: 24px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h1 {
+    h1, h2 {
       text-align: center;
       color: #2c3e50;
     }
-    input[type="text"] {
+    input[type="text"], button {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
+      font-size: 16px;
+    }
+    input[type="text"] {
       border: 1px solid #ccc;
       border-radius: 8px;
     }
     button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
       background: #007BFF;
       color: white;
-      font-size: 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -44,80 +43,200 @@
       background: #0056b3;
     }
     .result {
-      margin-top: 20px;
-      background: #ecf5ff;
+      margin-top: 24px;
+      background: #f0f8ff;
       border-left: 5px solid #007BFF;
       padding: 16px;
       border-radius: 8px;
     }
+    .tugas {
+      margin-top: 20px;
+    }
+    ul, ol {
+      margin-left: 20px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #d35400;
+    }
     .notfound {
       color: red;
-      margin-top: 10px;
       text-align: center;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Pembagian Tugas Remidi</h1>
-    <input type="text" id="search" placeholder="Masukkan nama siswa..." />
+    <h1>Tugas Remidi Informatika</h1>
+    <p>Masukkan nama siswa untuk melihat tugas perbaikannya.</p>
+    <input type="text" id="search" placeholder="Masukkan nama siswa...">
     <button onclick="cekTugas()">Cek Tugas</button>
+
     <div id="hasil" class="result"></div>
   </div>
 
   <script>
     const siswa = [
-      // Format: { nama, kelas, nilai }
       { nama: "Lutfi Tirta Zayyini", kelas: "X APHP", nilai: 31 },
-      { nama: "Ibrahim", kelas: "X APHP", nilai: 6 },
-      { nama: "Angganurangga", kelas: "X APHP", nilai: 29 },
-      { nama: "Elfann Muhammad Nazar", kelas: "X APHP", nilai: 17 },
-      { nama: "Pirman", kelas: "X APHP", nilai: 26 },
-      { nama: "Muhamad Adwam Almuhasabah", kelas: "X APHP", nilai: 29 },
-      { nama: "Fahri Sani", kelas: "X APHP", nilai: 23 },
-      { nama: "M Fahris Arrazqi", kelas: "X APHP", nilai: 46 },
-      { nama: "Ahmad Gias", kelas: "X APHP", nilai: 23 },
-      { nama: "Suteu Ramadani", kelas: "X APHP", nilai: 14 },
-      { nama: "Rinaldi", kelas: "X APHP", nilai: 17 },
-      { nama: "Ali Adrian Maulana", kelas: "X DKV 1", nilai: 34 },
-      { nama: "Reza Nugraha", kelas: "X DKV 1", nilai: 46 },
-      { nama: "Elma Rahmawati", kelas: "X DKV 1", nilai: 31 },
-      { nama: "Yopi Nuraeni", kelas: "X DKV 1", nilai: 20 },
-      { nama: "Silva Amelia Putri", kelas: "X DKV 1", nilai: 46 },
-      { nama: "Agung L", kelas: "X DKV 2", nilai: 20 },
-      { nama: "Muhamad Aldo", kelas: "X DKV 2", nilai: 29 },
-      { nama: "Ilyas Epriana", kelas: "X DKV 2", nilai: 40 },
-      { nama: "Via Siti Sa'adah", kelas: "X DKV 2", nilai: 31 },
-      { nama: "Allif Hakim Mulyana", kelas: "X DKV 3", nilai: 26 },
-      { nama: "Ali Nugraha", kelas: "X DKV 3", nilai: 29 },
-      { nama: "Andika Pratama Y", kelas: "X DKV 3", nilai: 31 },
-      { nama: "Iqbal Nurul Ikhsan", kelas: "X DKV 3", nilai: 9 },
-      { nama: "Resa Aprilia", kelas: "X DKV 3", nilai: 31 }
+  { nama: "Ibrahim", kelas: "X APHP", nilai: 6 },
+  { nama: "Angganurangga", kelas: "X APHP", nilai: 29 },
+  { nama: "Elfann Muhammad Nazar", kelas: "X APHP", nilai: 17 },
+  { nama: "Pirman", kelas: "X APHP", nilai: 26 },
+  { nama: "PSAT03073", kelas: "X APHP", nilai: 40 },
+  { nama: "Muhamad Adwam Almuhasabah", kelas: "X APHP", nilai: 29 },
+  { nama: "Fahri Sani", kelas: "X APHP", nilai: 23 },
+  { nama: "Ardiansyah", kelas: "X APHP", nilai: 37 },
+  { nama: "M Fahris Arrazqi", kelas: "X APHP", nilai: 46 },
+  { nama: "Ahmad Gias", kelas: "X APHP", nilai: 23 },
+  { nama: "Hizkil", kelas: "X APHP", nilai: 31 },
+  { nama: "Fiki Suminar", kelas: "X APHP", nilai: 40 },
+  { nama: "Restu Kurniawan", kelas: "X APHP", nilai: 40 },
+  { nama: "Suteu Ramadani", kelas: "X APHP", nilai: 14 },
+  { nama: "Daka Iskandar", kelas: "X APHP", nilai: 31 },
+  { nama: "Ramdani", kelas: "X APHP", nilai: 37 },
+  { nama: "Miftahul Huda", kelas: "X APHP", nilai: 40 },
+  { nama: "Rinaldi", kelas: "X APHP", nilai: 17 },
+  { nama: "Arini Mega Agustin", kelas: "X APHP", nilai: 77 },
+  { nama: "Angganurangga", kelas: "X APHP", nilai: 74 },
+  { nama: "Muhammad Al Basit", kelas: "X DKV 1", nilai: 31 },
+  { nama: "Eka Ramdani", kelas: "X DKV 1", nilai: 17 },
+  { nama: "Nadia Khoirunnisa", kelas: "X DKV 1", nilai: 49 },
+  { nama: "Muhamad Azril Alansori", kelas: "X DKV 1", nilai: 17 },
+  { nama: "Ilham Hapid Baihaqi", kelas: "X DKV 1", nilai: 46 },
+  { nama: "Ali Adrian Maulana", kelas: "X DKV 1", nilai: 34 },
+  { nama: "Reza Nugraha", kelas: "X DKV 1", nilai: 46 },
+  { nama: "Arip Saputra", kelas: "X DKV 1", nilai: 71 },
+  { nama: "Elma Rahmawati", kelas: "X DKV 1", nilai: 31 },
+  { nama: "Dylan Felish Arza Syahputra", kelas: "X DKV 1", nilai: 74 },
+  { nama: "Azka Dwi Syifa Munandar", kelas: "X DKV 1", nilai: 40 },
+  { nama: "Salman Raka Alfahrizi", kelas: "X DKV 1", nilai: 51 },
+  { nama: "Fahrul Rizki Ramdani", kelas: "X DKV 1", nilai: 74 },
+  { nama: "Akmawati Mutmainah", kelas: "X DKV 1", nilai: 40 },
+  { nama: "Irsan Fariz Maulana", kelas: "X DKV 1", nilai: 26 },
+  { nama: "Irpan Haeruman", kelas: "X DKV 1", nilai: 63 },
+  { nama: "Anisa Napilah", kelas: "X DKV 1", nilai: 77 },
+  { nama: "Agung Gunawan", kelas: "X DKV 1", nilai: 43 },
+  { nama: "Randi Maolana", kelas: "X DKV 1", nilai: 57 },
+  { nama: "Yopi Nuraeni", kelas: "X DKV 1", nilai: 20 },
+  { nama: "Silva Amelia Putri", kelas: "X DKV 1", nilai: 46 },
+  { nama: "Seni Aropah", kelas: "X DKV 1", nilai: 49 },
+  { nama: "Trian Fariz Azzikri", kelas: "X DKV 1", nilai: 69 },
+  { nama: "Deris Dwi Ardika", kelas: "X DKV 2", nilai: 69 },
+  { nama: "Dede Muhammad Fauzi", kelas: "X DKV 2", nilai: 14 },
+  { nama: "Fahmi Saepul Milah", kelas: "X DKV 2", nilai: 60 },
+  { nama: "Agung L", kelas: "X DKV 2", nilai: 20 },
+  { nama: "Muhamad Aldo", kelas: "X DKV 2", nilai: 29 },
+  { nama: "Aira Astuti", kelas: "X DKV 2", nilai: 34 },
+  { nama: "Hadi Ramdani", kelas: "X DKV 2", nilai: 37 },
+  { nama: "Revan Maulana Firmansyah", kelas: "X DKV 2", nilai: 29 },
+  { nama: "Ilyas Epriana", kelas: "X DKV 2", nilai: 40 },
+  { nama: "Rani Nuraeni", kelas: "X DKV 2", nilai: 46 },
+  { nama: "Ihsan Mubarok", kelas: "X DKV 2", nilai: 51 },
+  { nama: "Ai Lasyati", kelas: "X DKV 2", nilai: 40 },
+  { nama: "Raga", kelas: "X DKV 2", nilai: 40 },
+  { nama: "Raihan Khoirul Azzam", kelas: "X DKV 2", nilai: 43 },
+  { nama: "Neng Hoerul Nisa", kelas: "X DKV 2", nilai: 69 },
+  { nama: "Cep Heri Purnama", kelas: "X DKV 2", nilai: 34 },
+  { nama: "Desi Lestari", kelas: "X DKV 2", nilai: 69 },
+  { nama: "Diki Sabit Muslim", kelas: "X DKV 2", nilai: 77 },
+  { nama: "Zahra Fatmawatii", kelas: "X DKV 2", nilai: 31 },
+  { nama: "Aripin", kelas: "X DKV 2", nilai: 37 },
+  { nama: "Anur Alam", kelas: "X DKV 2", nilai: 74 },
+  { nama: "Via Siti Sa'adah", kelas: "X DKV 2", nilai: 31 },
+  { nama: "Laila Nazwatul Fuadah", kelas: "X DKV 2", nilai: 40 },
+  { nama: "Sinta Fitri Ramadani", kelas: "X DKV 2", nilai: 49 },
+  { nama: "Dede Setiawan", kelas: "X DKV 3", nilai: 31 },
+  { nama: "M Vigi Ramdani", kelas: "X DKV 3", nilai: 71 },
+  { nama: "Allif Hakim Mulyana", kelas: "X DKV 3", nilai: 26 },
+  { nama: "Fauzan Muhamad Rizki", kelas: "X DKV 3", nilai: 34 },
+  { nama: "Khoiril Muhamad I", kelas: "X DKV 3", nilai: 37 },
+  { nama: "Ali Nugraha", kelas: "X DKV 3", nilai: 29 },
+  { nama: "Irwan Nurhakim", kelas: "X DKV 3", nilai: 31 },
+  { nama: "Ikbal Abdul Aziz", kelas: "X DKV 3", nilai: 29 },
+  { nama: "Andika Pratama Y", kelas: "X DKV 3", nilai: 31 },
+  { nama: "Paizal Shiddiq", kelas: "X DKV 3", nilai: 26 },
+  { nama: "M Azka Ardian", kelas: "X DKV 3", nilai: 37 },
+  { nama: "Rizki Abdullah", kelas: "X DKV 3", nilai: 37 },
+  { nama: "Rizwan Ahmad Faisal", kelas: "X DKV 3", nilai: 31 },
+  { nama: "Indra Purnama", kelas: "X DKV 3", nilai: 40 },
+  { nama: "Dinah Padiyah", kelas: "X DKV 3", nilai: 69 },
+  { nama: "Regina Julyana Nurul", kelas: "X DKV 3", nilai: 29 },
+  { nama: "Iqbal Nurul Ikhsan", kelas: "X DKV 3", nilai: 9 },
+  { nama: "Resa Aprilia", kelas: "X DKV 3", nilai: 31 },
+  { nama: "Meindah Nurislami Salsabila", kelas: "X DKV 3", nilai: 46 },
+  { nama: "Meta Nur Insani", kelas: "X DKV 3", nilai: 46 }
+      // Tambahkan siswa lain sesuai kebutuhan...
     ];
 
     function cekTugas() {
       const input = document.getElementById("search").value.toLowerCase();
       const hasil = document.getElementById("hasil");
-
-      const found = siswa.find((s, i) => s.nama.toLowerCase().includes(input));
-
+      const found = siswa.find((s) => s.nama.toLowerCase().includes(input));
+      
       if (found) {
         const index = siswa.findIndex(s => s.nama === found.nama);
         const bagian = index % 2 === 0 ? 1 : 2;
-        const tugas = bagian === 1
-          ? "Membuat <strong>rangkuman materi Informatika</strong> (boleh ditulis tangan atau diketik, minimal 2 halaman)."
-          : "Membuat <strong>presentasi PowerPoint</strong> dan melakukan <strong>presentasi</strong> di depan kelas (minimal 8 slide, tema sesuai materi yang belum dikuasai).";
 
         hasil.innerHTML = `
-          <strong>Nama:</strong> ${found.nama}<br>
-          <strong>Kelas:</strong> ${found.kelas}<br>
-          <strong>Nilai:</strong> ${found.nilai}<br>
-          <strong>Status:</strong> <span style="color:red;">Perlu Perbaikan</span><br><br>
-          <strong>Tugas Bagian ${bagian}:</strong><br>${tugas}
+          <p><strong>Nama:</strong> ${found.nama}</p>
+          <p><strong>Kelas:</strong> ${found.kelas}</p>
+          <p><strong>Nilai:</strong> ${found.nilai}</p>
+          <p><strong>Status:</strong> <span style="color:red;">Perlu Perbaikan Nilai</span></p>
+          <div class="tugas">
+            ${bagian === 1 ? tugasBagian1() : tugasBagian2()}
+          </div>
         `;
       } else {
         hasil.innerHTML = `<p class="notfound">Nama tidak ditemukan dalam daftar remidi.</p>`;
       }
+    }
+
+    function tugasBagian1() {
+      return `
+        <h2>📘 Rangkuman Tugas – Bagian 1</h2>
+        <p><strong>Judul:</strong> <em>"Pemahaman Dasar Informatika dan Aplikasinya"</em></p>
+        <p><strong>Format:</strong></p>
+        <ul>
+          <li>Ditulis tangan atau diketik rapi di kertas A4</li>
+          <li>Nama lengkap & kelas di pojok kanan atas</li>
+          <li>Jawaban individu</li>
+          <li>5–10 kalimat per soal</li>
+        </ul>
+        <p><strong>Pertanyaan:</strong></p>
+        <ol>
+          <li>Jelaskan perbedaan penalaran deduktif & induktif, serta berikan contoh.</li>
+          <li>Mengapa IP 192.168.1.1 termasuk kelas C? Jelaskan pembagian kelas IP.</li>
+          <li>Buat dan jelaskan program Java sederhana menggunakan if-else.</li>
+          <li>Apa fungsi utama mikrokontroler dalam perangkat IoT atau robotik?</li>
+          <li>Bandingkan kelebihan dan kekurangan cloud storage dan harddisk biasa.</li>
+        </ol>
+        <p><strong>Pengumpulan:</strong> Dikumpulkan ke guru atau unggah ke Google Classroom jika diarahkan.</p>
+        <p><strong>Deadline:</strong> <span class="highlight">25 Juni 2025</span></p>
+      `;
+    }
+
+    function tugasBagian2() {
+      return `
+        <h2>📊 PowerPoint dan Presentasi – Bagian 2</h2>
+        <p><strong>Tema:</strong> <em>"Penguasaan Konsep Informatika dalam Kehidupan Nyata"</em></p>
+        <p><strong>Instruksi:</strong></p>
+        <ul>
+          <li>Presentasi PowerPoint: 8–12 slide</li>
+          <li>Disampaikan secara lisan (maks. 7 menit)</li>
+          <li>Dikerjakan berpasangan atau kelompok kecil</li>
+        </ul>
+        <p><strong>Topik Pilihan:</strong> (pilih satu)</p>
+        <ul>
+          <li>🔐 Keamanan Data di Era Digital</li>
+          <li>🌐 Struktur Jaringan Komputer dan Topologi</li>
+          <li>💻 Pemrograman Java untuk Pemula</li>
+          <li>📱 Perangkat Lunak Produktivitas dan Aplikasinya</li>
+          <li>📶 Cloud Storage vs Penyimpanan Lokal</li>
+        </ul>
+        <p><strong>Pengumpulan:</strong> Presentasi di depan kelas + kirim file PPT ke guru</p>
+        <p><strong>Deadline:</strong> <span class="highlight">25 Juni 2025</span></p>
+      `;
     }
   </script>
 </body>
