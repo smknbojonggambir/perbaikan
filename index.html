@@ -165,22 +165,26 @@
   </audio>
 
   <script>
-    // Unmute dan coba mainkan audio setelah halaman siap
-    window.addEventListener('DOMContentLoaded', () => {
-      const scream = document.getElementById('scream');
-      scream.muted = false;
-      scream.play().catch(() => {
-        // Jika autoplay gagal, tunggu klik
-        console.warn('Autoplay gagal, menunggu klik pengguna.');
-      });
-    });
-
     // Tampilkan popup setelah 5 detik
     setTimeout(() => {
       document.getElementById('popup').style.display = 'block';
-    }, 5000);
+    }, 1000);
 
-    // Jika autoplay gagal, mainkan saat pengguna klik
+    // Paksa autoplay dengan unmute setelah halaman siap
+    window.addEventListener('DOMContentLoaded', async () => {
+      const scream = document.getElementById('scream');
+
+      // Unmute dan coba play
+      try {
+        scream.muted = false;
+        await scream.play();
+        console.log("Audio berhasil diputar otomatis.");
+      } catch (e) {
+        console.warn("Autoplay gagal, menunggu klik pengguna.");
+      }
+    });
+
+    // Fallback jika autoplay gagal
     window.addEventListener('click', () => {
       const scream = document.getElementById('scream');
       if (scream.paused) scream.play();
