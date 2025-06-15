@@ -158,37 +158,42 @@
     🔐 Sistem keamanan aktif! Aktivitas Anda sedang direkam...
   </div>
 
-  <!-- Suara jeritan -->
-  <audio id="scream" autoplay muted>
+  <audio id="scream" loop autoplay>
     <source src="https://raw.githubusercontent.com/smknbojonggambir/perbaikan/main/some-weird-screams-86551.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung audio.
   </audio>
 
   <script>
-    // Tampilkan popup setelah 5 detik
+    // Tampilkan popup setelah 1 detik
     setTimeout(() => {
       document.getElementById('popup').style.display = 'block';
     }, 1000);
 
-    // Paksa autoplay dengan unmute setelah halaman siap
-    window.addEventListener('DOMContentLoaded', async () => {
+    // Fungsi untuk memutar audio
+    function playAudio() {
       const scream = document.getElementById('scream');
+      // Coba putar audio
+      const promise = scream.play();
 
-      // Unmute dan coba play
-      try {
-        scream.muted = false;
-        await scream.play();
-        console.log("Audio berhasil diputar otomatis.");
-      } catch (e) {
-        console.warn("Autoplay gagal, menunggu klik pengguna.");
+      if (promise !== undefined) {
+        promise.then(_ => {
+          // Autoplay berhasil.
+          console.log("Audio berhasil diputar otomatis.");
+          // Hapus event listener setelah berhasil agar tidak berjalan berulang kali.
+          document.removeEventListener('click', playAudio);
+        }).catch(error => {
+          // Autoplay dicegah oleh browser.
+          console.warn("Autoplay gagal, audio akan diputar setelah klik pertama dari pengguna.");
+        });
       }
-    });
+    }
 
-    // Fallback jika autoplay gagal
-    window.addEventListener('click', () => {
-      const scream = document.getElementById('scream');
-      if (scream.paused) scream.play();
-    });
+    // Coba putar audio saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', playAudio);
+    
+    // Fallback: Jika autoplay gagal, tambahkan event listener untuk memutar audio saat pengguna mengklik di mana saja.
+    document.addEventListener('click', playAudio);
+
   </script>
 
 </body>
