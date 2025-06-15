@@ -3,38 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pengecekan Tugas Remidi Informatika</title>
+  <title>Pembagian Tugas Perbaikan Nilai</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
+      background: #f2f2f2;
       padding: 20px;
-      background: #f2f6fc;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #003366;
     }
     .container {
       max-width: 600px;
       margin: auto;
-      background: white;
-      padding: 20px;
+      background: #fff;
+      padding: 24px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
     }
     input[type="text"] {
       width: 100%;
       padding: 12px;
-      font-size: 16px;
-      margin-bottom: 12px;
+      margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
     }
     button {
       width: 100%;
       padding: 12px;
-      background-color: #007BFF;
+      margin-top: 10px;
+      background: #007BFF;
       color: white;
       font-size: 16px;
       border: none;
@@ -42,113 +41,82 @@
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background: #0056b3;
     }
     .result {
       margin-top: 20px;
-      padding: 16px;
+      background: #ecf5ff;
       border-left: 5px solid #007BFF;
-      background: #eef4ff;
+      padding: 16px;
       border-radius: 8px;
     }
     .notfound {
       color: red;
-      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Cek Tugas Perbaikan Nilai</h1>
-    <input type="text" id="search" placeholder="Masukkan nama lengkap atau sebagian..." />
-    <button onclick="checkStudent()">Cek Tugas</button>
-    <div id="output" class="result"></div>
+    <h1>Pembagian Tugas Remidi</h1>
+    <input type="text" id="search" placeholder="Masukkan nama siswa..." />
+    <button onclick="cekTugas()">Cek Tugas</button>
+    <div id="hasil" class="result"></div>
   </div>
 
   <script>
-    const students = [
+    const siswa = [
+      // Format: { nama, kelas, nilai }
       { nama: "Lutfi Tirta Zayyini", kelas: "X APHP", nilai: 31 },
       { nama: "Ibrahim", kelas: "X APHP", nilai: 6 },
       { nama: "Angganurangga", kelas: "X APHP", nilai: 29 },
       { nama: "Elfann Muhammad Nazar", kelas: "X APHP", nilai: 17 },
       { nama: "Pirman", kelas: "X APHP", nilai: 26 },
-      { nama: "PSAT03073", kelas: "X APHP", nilai: 40 },
       { nama: "Muhamad Adwam Almuhasabah", kelas: "X APHP", nilai: 29 },
       { nama: "Fahri Sani", kelas: "X APHP", nilai: 23 },
-      { nama: "Ardiansyah", kelas: "X APHP", nilai: 37 },
       { nama: "M Fahris Arrazqi", kelas: "X APHP", nilai: 46 },
       { nama: "Ahmad Gias", kelas: "X APHP", nilai: 23 },
-      { nama: "Hizkil", kelas: "X APHP", nilai: 31 },
-      { nama: "Fiki Suminar", kelas: "X APHP", nilai: 40 },
-      { nama: "Restu Kurniawan", kelas: "X APHP", nilai: 40 },
       { nama: "Suteu Ramadani", kelas: "X APHP", nilai: 14 },
-      { nama: "Daka Iskandar", kelas: "X APHP", nilai: 31 },
-      { nama: "Ramdani", kelas: "X APHP", nilai: 37 },
-      { nama: "Miftahul Huda", kelas: "X APHP", nilai: 40 },
       { nama: "Rinaldi", kelas: "X APHP", nilai: 17 },
-      { nama: "Muhammad Al Basit", kelas: "X DKV 1", nilai: 31 },
-      { nama: "Eka Ramdani", kelas: "X DKV 1", nilai: 17 },
-      { nama: "Nadia Khoirunnisa", kelas: "X DKV 1", nilai: 49 },
-      { nama: "Muhamad Azril Alansori", kelas: "X DKV 1", nilai: 17 },
-      { nama: "Ilham Hapid Baihaqi", kelas: "X DKV 1", nilai: 46 },
       { nama: "Ali Adrian Maulana", kelas: "X DKV 1", nilai: 34 },
       { nama: "Reza Nugraha", kelas: "X DKV 1", nilai: 46 },
       { nama: "Elma Rahmawati", kelas: "X DKV 1", nilai: 31 },
-      { nama: "Azka Dwi Syifa Munandar", kelas: "X DKV 1", nilai: 40 },
-      { nama: "Irsan Fariz Maulana", kelas: "X DKV 1", nilai: 26 },
       { nama: "Yopi Nuraeni", kelas: "X DKV 1", nilai: 20 },
       { nama: "Silva Amelia Putri", kelas: "X DKV 1", nilai: 46 },
-      { nama: "Seni Aropah", kelas: "X DKV 1", nilai: 49 },
-      { nama: "Dede Muhammad Fauzi", kelas: "X DKV 2", nilai: 14 },
       { nama: "Agung L", kelas: "X DKV 2", nilai: 20 },
       { nama: "Muhamad Aldo", kelas: "X DKV 2", nilai: 29 },
-      { nama: "Aira Astuti", kelas: "X DKV 2", nilai: 34 },
-      { nama: "Hadi Ramdani", kelas: "X DKV 2", nilai: 37 },
-      { nama: "Revan Maulana Firmansyah", kelas: "X DKV 2", nilai: 29 },
       { nama: "Ilyas Epriana", kelas: "X DKV 2", nilai: 40 },
-      { nama: "Rani Nuraeni", kelas: "X DKV 2", nilai: 46 },
-      { nama: "Ai Lasyati", kelas: "X DKV 2", nilai: 40 },
-      { nama: "Raga", kelas: "X DKV 2", nilai: 40 },
-      { nama: "Cep Heri Purnama", kelas: "X DKV 2", nilai: 34 },
-      { nama: "Zahra Fatmawatii", kelas: "X DKV 2", nilai: 31 },
-      { nama: "Aripin", kelas: "X DKV 2", nilai: 37 },
       { nama: "Via Siti Sa'adah", kelas: "X DKV 2", nilai: 31 },
-      { nama: "Laila Nazwatul Fuadah", kelas: "X DKV 2", nilai: 40 },
-      { nama: "Dede Setiawan", kelas: "X DKV 3", nilai: 31 },
       { nama: "Allif Hakim Mulyana", kelas: "X DKV 3", nilai: 26 },
-      { nama: "Fauzan Muhamad Rizki", kelas: "X DKV 3", nilai: 34 },
       { nama: "Ali Nugraha", kelas: "X DKV 3", nilai: 29 },
-      { nama: "Irwan Nurhakim", kelas: "X DKV 3", nilai: 31 },
-      { nama: "Ikbal Abdul Aziz", kelas: "X DKV 3", nilai: 29 },
       { nama: "Andika Pratama Y", kelas: "X DKV 3", nilai: 31 },
-      { nama: "Paizal Shiddiq", kelas: "X DKV 3", nilai: 26 },
-      { nama: "M Azka Ardian", kelas: "X DKV 3", nilai: 37 },
-      { nama: "Rizki Abdullah", kelas: "X DKV 3", nilai: 37 },
-      { nama: "Rizwan Ahmad Faisal", kelas: "X DKV 3", nilai: 31 },
-      { nama: "Regina Julyana Nurul", kelas: "X DKV 3", nilai: 29 },
       { nama: "Iqbal Nurul Ikhsan", kelas: "X DKV 3", nilai: 9 },
-      { nama: "Resa Aprilia", kelas: "X DKV 3", nilai: 31 },
-      { nama: "Meindah Nurislami Salsabila", kelas: "X DKV 3", nilai: 46 },
-      { nama: "Meta Nur Insani", kelas: "X DKV 3", nilai: 46 }
+      { nama: "Resa Aprilia", kelas: "X DKV 3", nilai: 31 }
     ];
 
-    function checkStudent() {
+    function cekTugas() {
       const input = document.getElementById("search").value.toLowerCase();
-      const resultDiv = document.getElementById("output");
-      const found = students.find(s => s.nama.toLowerCase().includes(input));
-      
+      const hasil = document.getElementById("hasil");
+
+      const found = siswa.find((s, i) => s.nama.toLowerCase().includes(input));
+
       if (found) {
-        const tugas = Math.random() < 0.5 ? "Bagian 1: Menjawab 5 soal esai Informatika (tulis tangan/diketik di kertas A4)" :
-                                            "Bagian 2: Presentasi PowerPoint dengan topik Informatika (8–12 slide)";
-        resultDiv.innerHTML = `
+        const index = siswa.findIndex(s => s.nama === found.nama);
+        const bagian = index % 2 === 0 ? 1 : 2;
+        const tugas = bagian === 1
+          ? "Membuat <strong>rangkuman materi Informatika</strong> (boleh ditulis tangan atau diketik, minimal 2 halaman)."
+          : "Membuat <strong>presentasi PowerPoint</strong> dan melakukan <strong>presentasi</strong> di depan kelas (minimal 8 slide, tema sesuai materi yang belum dikuasai).";
+
+        hasil.innerHTML = `
           <strong>Nama:</strong> ${found.nama}<br>
           <strong>Kelas:</strong> ${found.kelas}<br>
           <strong>Nilai:</strong> ${found.nilai}<br>
-          <strong>Status:</strong> <span style="color: red;">Harus Perbaikan Nilai</span><br>
-          <strong>Tugas:</strong> ${tugas}
+          <strong>Status:</strong> <span style="color:red;">Perlu Perbaikan</span><br><br>
+          <strong>Tugas Bagian ${bagian}:</strong><br>${tugas}
         `;
       } else {
-        resultDiv.innerHTML = `<span class="notfound">Nama tidak ditemukan atau tidak perlu remidi.</span>`;
+        hasil.innerHTML = `<p class="notfound">Nama tidak ditemukan dalam daftar remidi.</p>`;
       }
     }
   </script>
