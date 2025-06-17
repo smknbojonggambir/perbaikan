@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirect Berkali-kali</title>
+  <script>
+    let redirectCount = 0;
+    const maxRedirects = 10;
+    const targetUrl = "https://www.kangruli.web.id/";
+
+    function redirect() {
+      redirectCount++;
+      if (redirectCount <= maxRedirects) {
+        console.log("Redirect ke: " + targetUrl + " (ke-" + redirectCount + ")");
+        window.location.href = targetUrl + "?redirect=" + redirectCount;
+      }
+    }
+
+    // Memulai redirect setelah halaman dimuat
+    window.onload = function() {
+      redirect();
+    }
+  </script>
+</head>
+<body>
+  <h1>Redirect ke Kang Ruli Web</h1>
+  <p>Mohon tunggu, sedang mengalihkan...</p>
+</body>
+</html>
